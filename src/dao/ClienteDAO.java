@@ -32,7 +32,7 @@ public class ClienteDAO {
 
     }
 
-    public void actualizarCliente(Cliente cliente) throws SQLException {
+    public void actualizarCliente(int id, Cliente cliente) throws SQLException {
         String url = "jdbc:mysql://localhost:3306/tienda";
         String user = "root";
         String password = "1234";
@@ -238,5 +238,65 @@ public class ClienteDAO {
         }
         return lista;
     }
+    public double obtenerMediaProductos() {
+        String url = "jdbc:mysql://localhost:3306/tienda";
+        String user = "root";
+        String password = "1234";
+        Double media = 0.0;
+        String sql = "SELECT AVG(productos_comprados) FROM clientes";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                media = rs.getDouble(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al calcular la media " + e.getMessage());
+        }
+        return media;
     }
+    public double obtenerMediaConCondiciones() {
+        String url = "jdbc:mysql://localhost:3306/tienda";
+        String user = "root";
+        String password = "1234";
+
+        String sql = "SELECT AVG(dinero_gastado) FROM clientes WHERE edad > 25 AND productos_comprados > 3";
+        double media = 0.0;
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                media = rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al calcular la media " + e.getMessage());
+        }
+        return media;
+    }
+    public int contarClientesGastoMayor100() {
+        String url = "jdbc:mysql://localhost:3306/tienda";
+        String user = "root";
+        String password = "1234";
+
+        int cantidad = 0;
+        String sql = "SELECT COUNT(*) FROM clientes WHERE dinero_gastado > 100";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+            cantidad = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener la cantidad de clientes: " + e.getMessage());
+        }
+        return cantidad;
+    }
+    }
+
 

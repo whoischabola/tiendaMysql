@@ -81,8 +81,20 @@ void main() throws SQLException {
                 System.out.println(puesto + "º Lugar: " + c.getNombre() + " (" + c.getProductos_comprados() + " productos)");
                 puesto++;
             }
+            double media = dao.obtenerMediaProductos();
+        System.out.println("Media: " + media);
         }
-        }
+        ClienteDAO dao7 = new ClienteDAO();
+    double resultado = dao.obtenerMediaConCondiciones();
+    System.out.println("Resultado gasto mayores de 25 años y +3 productos: " + resultado);
+
+    ClienteDAO dao8 = new ClienteDAO();
+    int cantidad = dao8.contarClientesGastoMayor100();
+    System.out.println("Cantidad de dinero: " + cantidad);
+}
+
+
+
 
 
 
